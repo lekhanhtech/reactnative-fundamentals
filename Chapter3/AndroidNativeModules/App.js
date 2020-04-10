@@ -11,13 +11,11 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Text,
   StatusBar,
   Button,
 } from 'react-native';
 
 import {
-  Header,
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
 import ToastExample from './ToastExample';
