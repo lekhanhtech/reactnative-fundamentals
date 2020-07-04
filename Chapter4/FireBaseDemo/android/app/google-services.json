@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1056657280054",
+    "firebase_url": "https://reactnativedemo-2020.firebaseio.com",
+    "project_id": "reactnativedemo-2020",
+    "storage_bucket": "reactnativedemo-2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056657280054:android:5d229895c2f467de6b5c97",
+        "android_client_info": {
+          "package_name": "com.donga.khanh.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056657280054-ocapjj18vta3nlp45krkosbvgf69ud90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.donga.khanh.firebase",
+            "certificate_hash": "508851c009099b0ce2a003681d93d237f5b9dae7"
+          }
+        },
+        {
+          "client_id": "1056657280054-jfrbsbg03i90jvisiunnb7fc44mqmmqr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7nT3jCgeMRb69_kiK-GFnBgvA0-c8Kek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056657280054-jfrbsbg03i90jvisiunnb7fc44mqmmqr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
