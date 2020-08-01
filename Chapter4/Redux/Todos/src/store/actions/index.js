@@ -2,7 +2,7 @@ import { createActions } from 'redux-actions'
 
 const {
   addTodo,
-  toggeTodo,
+  toggleTodo,
   setVisibilityFilter,
 } = createActions({
   ADD_TODO: (text) => ({ text }),
@@ -14,6 +14,6 @@ const {
 
 export {
   addTodo,
-  toggeTodo,
+  toggleTodo,
   setVisibilityFilter,
 }

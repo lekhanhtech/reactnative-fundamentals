@@ -3,7 +3,7 @@ import { HomeScreen } from '../components'
 import {store} from '../store'
 import { 
     addTodo,
-    toggeTodo,
+    toggleTodo,
     setVisibilityFilter,
 } from '../store/actions'
 
@@ -11,8 +11,8 @@ function onAddTodo(dispatch, text) {
     dispatch(addTodo(text))
 }
 
-function onToggeTodo(dispatch, index) {
-    dispatch(toggeTodo(index))
+function onToggleTodo(dispatch, index) {
+    dispatch(toggleTodo(index))
 }
 
 function onSetVisibilityFilter(dispatch, filter) {
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     onAddTodo: (text) => onAddTodo(dispatch, text),
-    onToggeTodo: (index) => onToggeTodo(dispatch, index),
+    onToggleTodo: (index) => onToggleTodo(dispatch, index),
     onSetVisibilityFilter: (filter) => onSetVisibilityFilter(dispatch, filter),
 })
 

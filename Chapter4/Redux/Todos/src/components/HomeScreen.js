@@ -20,6 +20,7 @@ import {
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
+import { store } from '../store'
 
 export default class App extends Component {
 
@@ -31,6 +32,11 @@ export default class App extends Component {
   }
 
   render() {
+    let filteredData = this.props.todos;
+    if(this.props.visibilityFilter!=='SHOW_ALL')
+    {
+      filteredData = filteredData.filter((item) => (item.completed==false))
+    }
     return (
       <View>
           <View style={styles.inputForm}>
@@ -46,13 +52,30 @@ export default class App extends Component {
             ></Button>
           </View>
           <View style={styles.inputForm}>
+            <View style={{flexDirection: 'row'}}>
+              <CheckBox value={store.getState().app.visibilityFilter === 'SHOW_ALL'}
+                onValueChange={(selected) => {
+                  const filter = selected? 'SHOW_ALL': 'SHOW_NOT_COMPLETED';
+                  console.log('selected:', selected)
+                  this.props.onSetVisibilityFilter(filter);
+                }}
+              ></CheckBox>
+              <Text>Show All</Text>
+            </View>
             <Text>The list of tasks: </Text>
             <FlatList
-              data={this.props.todos}
+              data={filteredData}
               renderItem={({item}) => {
                 return (
                   <View style={styles.todoItem}>
-                    <CheckBox value={item.completed}></CheckBox>
+                    <CheckBox value={item.completed}
+                      onValueChange={(selected) => {
+                        const index = this.props.todos.indexOf(item);
+                        if(index>=0) {
+                          this.props.onToggleTodo(index);
+                        }
+                      }}
+                    ></CheckBox>
                     <Text> {item.text} </Text>
                   </View>
                 )

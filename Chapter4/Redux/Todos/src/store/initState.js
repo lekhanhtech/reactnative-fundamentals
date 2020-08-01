@@ -1,6 +1,6 @@
 export default {
   app: {
     todos: [],
-    visibilityFilter: 'SHOW_COMPLETED',
+    visibilityFilter: 'SHOW_ALL',
   }
 }

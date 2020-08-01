@@ -2,7 +2,7 @@ import { handleActions } from 'redux-actions'
 import initState from '../initState'
 import {
   addTodo, 
-  toggeTodo, 
+  toggleTodo, 
   setVisibilityFilter,
 } from '../actions'
 
@@ -11,7 +11,7 @@ export default handleActions({
     ...state,
     todos: state.todos.concat([{ text, completed: false }])
   }),
-  [toggeTodo]: (state, { payload: { idx } }) => {
+  [toggleTodo]: (state, { payload: { idx } }) => {
     const todos = state.todos.map((todo, index) =>
         idx === index
           ? { text: todo.text, completed: !todo.completed }
