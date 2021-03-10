@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.firebase"
+        applicationId "com.donga.khanh.dong"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -150,15 +150,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        config {
+            storeFile file('../../khanh.jks')
+            storePassword 'Abc12345'
+            keyAlias = 'khanh'
+            keyPassword 'Abc12345'
+        }
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.config
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.config
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -221,5 +227,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

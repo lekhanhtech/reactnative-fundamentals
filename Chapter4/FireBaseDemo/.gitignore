@@ -20,6 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+ios/Pods
 
 # Android/IntelliJ
 #
@@ -28,6 +29,27 @@ build/
 .gradle
 local.properties
 *.iml
+android/.gradle
+android/.project
+android/.settings
+android/.ideal
+android/build
+android/app/.settings
+android/app/.classpath
+android/app/.project
+android/app/build
+android/.ideal
+android/build
+android/app/.settings
+android/app/.classpath
+android/app/.project
+android/app/khanh.jks
+android/.ideal
+android/build
+android/app/.settings
+android/app/.classpath
+android/app/.project
+android/app/google-services.json
 
 # node.js
 #

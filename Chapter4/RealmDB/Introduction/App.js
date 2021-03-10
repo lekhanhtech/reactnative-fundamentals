@@ -14,6 +14,7 @@ import {
   View,
   Text,
   StatusBar,
+  Button,
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen'
@@ -33,7 +34,6 @@ const PersonSchema = {
   name: 'Person',
   properties: {
     name:     'string',
-    birthday: 'date',
     cars:     'Car[]', // a list of Cars
     picture:  'data?'  // optional property
   }
@@ -42,41 +42,19 @@ const PersonSchema = {
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { realm: null }
+    this.state = { 
+      realm: null,
+      person: [],
+    }
   }
 
   componentDidMount() {
     Realm.open({
-      schema: [CarSchema, PersonSchema]
+      schema: [CarSchema, PersonSchema],
+      deleteRealmIfMigrationNeeded: true
     }).then(realm => {
-      // Create Realm objects and write to local storage
-      realm.write(() => {
-        const myCar = realm.create('Car', {
-          make: 'Honda',
-          model: 'Civic',
-          miles: 1000,
-        })
-        myCar.miles += 20 // Update a property value
-      })
 
-      // Query Realm for all cars with a high mileage
-      const cars = realm.objects('Car').filtered('miles > 1000')
-
-      // Will return a Results object with our 1 car
-      console.log(cars.length) // => 1
-
-      // Add another car
-      realm.write(() => {
-        const myCar = realm.create('Car', {
-          make: 'Ford',
-          model: 'Focus',
-          miles: 2000,
-        })
-      })
-
-      // Query results are updated in realtime
-      console.log(cars.length) // => 2
-      this.setState({ realm })
+      this.setState({realm})
     });
   }
 
@@ -85,6 +63,45 @@ export default class App extends Component {
     const {realm} = this.state
     if (realm !== null && !realm.isClosed) {
       realm.close();
+    }
+  }
+
+  createPerson () {
+    if(this.state.realm) {
+      // Add persons and their cars
+      this.state.realm.write(() => {
+          let john = realm.create('Person', {name: 'John', cars: []});
+          john.cars.push({make: 'Honda',  model: 'Accord', miles: 1500});
+          john.cars.push({make: 'Toyota', model: 'Prius',  miles: 2780});
+
+          let joan = realm.create('Person', {name: 'Joan', cars: []});
+          joan.cars.push({make: 'Skoda', model: 'Octavia', miles: 1120});
+          joan.cars.push({make: 'Ford',  model: 'Fiesta',  miles: 95});
+          joan.cars.push({make: 'VW',    model: 'Golf',    miles: 1270});
+
+          let jill = realm.create('Person', {name: 'Jill', cars: []});
+
+          let jack = realm.create('Person', {name: 'Jack', cars: []});
+          jack.cars.push({make: 'Porche', model: '911',    miles: 965});
+      });
+    }
+  }
+
+  queryWhoHaveCars() {
+    // Find car owners
+    if(this.state.realm) {
+      let carOwners = this.state.realm.objects('Person').filtered('cars.@size > 0');
+      console.log('Car owners')
+      this.setState({person:carOwners})
+    }  
+  }
+
+  queryWhoDriveMoreThanAverage() {
+    // Find who has been driver longer than average
+    if(this.state.realm) {
+      let average = this.state.realm.objects('Car').avg('miles');
+      let longerThanAverage = this.state.realm.objects('Person').filtered('cars.@sum.miles > $0', average);
+      this.setState({person:longerThanAverage})
     }
   }
 
@@ -97,13 +114,37 @@ export default class App extends Component {
       <>
       <StatusBar barStyle="dark-content" />
         <SafeAreaView>
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
+        <ScrollView
             style={styles.scrollView}>
-            <View style={styles.body}>
-              <Text style={styles.description}>
-                {info}
-              </Text>
+           <View>
+              <Button title="Who have cars?"
+                onPress={()=>{this.queryWhoHaveCars()}}
+              />
+              <Button title="Who drive more than average?"
+                onPress={()=>{this.queryWhoDriveMoreThanAverage()}}
+              />
+            </View>
+            <View>
+              {
+                this.state.person?(
+                  this.state.person.map((p, index) => (
+                    <View>
+                      <Text>{p.name}</Text>
+                      {
+                        p.cars?(
+                          p.cars.map(c => (
+                            <View>
+                              <Text>Make: {c.make}</Text>
+                              <Text>Model:{c.model}</Text>
+                              <Text>Mile:{c.mile}</Text>
+                            </View>
+                          ))
+                        ):null
+                      }
+                    </View>
+                  ))
+                ):null
+              }
             </View>
           </ScrollView>
         </SafeAreaView>

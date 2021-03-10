@@ -15,6 +15,7 @@ import {
   Text,
   StatusBar,
   Button,
+  Alert,
 } from 'react-native';
 
 import {
@@ -22,6 +23,7 @@ import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
 import remoteConfig from '@react-native-firebase/remote-config';
+import messaging from '@react-native-firebase/messaging';
 
 async function fetchRemoveConfig() {
   await remoteConfig().setConfigSettings({
@@ -43,6 +45,7 @@ const App: () => React$Node = () => {
       .setDefaults({
         show_a: 'true',
         show_b: 'true',
+        welcome: 'Welcome',
       })
       .then(() => {
         console.log('Default values set.');
@@ -50,7 +53,15 @@ const App: () => React$Node = () => {
       });
   }, []);
 
-  const {show_a, show_b} = remoteConfig().getAll();
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const {show_a, show_b, welcome} = remoteConfig().getAll();
   console.log('show_a:', show_a);
   console.log('show_b:', show_b);
 
@@ -68,7 +79,7 @@ const App: () => React$Node = () => {
             </View>
           )}
           <View style={styles.body}>
-            {
+          {
               (show_a.value)? (
                 <Button title='Feature A' ></Button>
               ):null
@@ -77,6 +88,11 @@ const App: () => React$Node = () => {
             {
               (show_b.value)? (
                 <Button title='Feature B' ></Button>
+              ):null
+            }
+            {
+              (welcome.value)? (
+              <Text> {welcome.value}</Text>
               ):null
             }
           </View>
